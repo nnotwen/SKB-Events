@@ -1,0 +1,41 @@
+.content {
+  min-height: 100vh;
+  width: auto;
+  margin: auto 20px;
+}
+
+.content-primary {
+  height: 65vh;
+  background-color: #4158d0;
+  background-image: linear-gradient(
+    43deg,
+    #4158d0 0%,
+    #c850c0 46%,
+    #ffcc70 100%
+  );
+  opacity: 80%;
+}
+
+.subcontent {
+  max-width: 750px;
+  margin: auto;
+}
+
+.footer {
+  --bs-bg-opacity: 1;
+  min-height: 50vh;
+  background-color: rgba(
+    var(--bs-tertiary-bg-rgb),
+    var(--bs-bg-opacity)
+  ) !important;
+  color: var(--bs-body-color);
+}
+
+.footer a {
+  color: var(--bs-body-color);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <title>SK Bingag</title>
+    <link
+      rel="shortcut icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Sangguniang_Kabataan_logo.svg/16px-Sangguniang_Kabataan_logo.svg.png"
+      type="image/x-icon"
+    />
+    <!-- JQUERY -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.js"
+      integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+      crossorigin="anonymous"
+    ></script>
+    <!-- BOOTSTRAP v5.3.1 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <!-- BOOTSTRAP-ICONS v1.10.5 CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+    <!-- BOOTSTRAP v5.3.1 JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="./index.css" />
+    <script src="./plugins/moment.js"></script>
+    <script src="./index.js"></script>
+  </head>
+  <body>
+    <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Sangguniang_Kabataan_logo.svg/64px-Sangguniang_Kabataan_logo.svg.png"
+            alt="SK Bingag"
+            width="52"
+            height="52"
+            style="border-radius: 50%"
+            class="me-2"
+          />
+          SK Bingag Sports League 2023
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#schedule"
+                ><i class="bi-calendar-event me-2"></i>Schedule</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#standing"
+                ><i class="bi-clipboard2-pulse me-2"></i>Standing</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#"
+                ><i class="bi-file-ruled me-2"></i>Rules</a
+              >
+            </li>
+          </ul>
+          <button class="btn btn-outline-secondary" id="theme-toggle">
+            <i class="bi-cloud-sun theme-icon"></i>&nbsp;
+            <span class="theme-name">Light Mode</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div class="content-primary position-relative overflow-hidden">
+      <div class="position-absolute bottom-0 start 0 p-3 pb-4">
+        <h1>SANGGUNIANG KABATAAN BINGAG</h1>
+        <h5>Basketball and Volleyball Inter-purok Tournament 2023</h5>
+      </div>
+    </div>
+    <div class="content schedule" id="schedule">
+      <div class="header pt-3 pb-4 fs-1 w-100 text-center">Schedule</div>
+      <div class="subcontent">
+        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active"
+              id="basketball-schedule-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#basketball-schedule-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="basketball-schedule-tab-pane"
+              aria-selected="true"
+            >
+              Basketball
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="volleyball-schedule-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#volleyball-schedule-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="volleyball-schedule-tab-pane"
+              aria-selected="false"
+            >
+              Volleyball
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content pt-3 pb-3" id="myTabContent">
+          <div
+            class="tab-pane fade show active"
+            id="basketball-schedule-tab-pane"
+            role="tabpanel"
+            aria-labelledby="basketball-schedule-tab"
+            tabindex="0"
+          >
+            <div class="schedule-summary pb-4"></div>
+            <div class="schedule-detailed"></div>
+          </div>
+          <div
+            class="tab-pane fade"
+            id="volleyball-schedule-tab-pane"
+            role="tabpanel"
+            aria-labelledby="volleyball-schedule-tab"
+            tabindex="0"
+          >
+            <div class="schedule-summary pb-4"></div>
+            <div class="schedule-detailed"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content standing" id="standing">
+      <div class="header pt-3 pb-4 fs-1 w-100 text-center">Standing</div>
+      <div class="subcontent">
+        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active"
+              id="basketball-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#basketball-standing-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="basketball-standing-tab-pane"
+              aria-selected="true"
+            >
+              Basketball
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="volleyball-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#volleyball-standing-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="volleyball-standing-tab-pane"
+              aria-selected="false"
+            >
+              Volleyball
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content pt-3 pb-3" id="myTabContent">
+          <div
+            class="tab-pane fade show active"
+            id="basketball-standing-tab-pane"
+            role="tabpanel"
+            aria-labelledby="basketball-standing-tab"
+            tabindex="0"
+          >
+            <div
+              class="accordion accordion-flush standing-detailed"
+              id="basketball-standing"
+            ></div>
+          </div>
+          <div
+            class="tab-pane fade"
+            id="volleyball-standing-tab-pane"
+            role="tabpanel"
+            aria-labelledby="volleyball-standing-tab"
+            tabindex="0"
+          >
+            <div class="accordion accordion-flush standing-detailed"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer p-5">
+      <div class="container py-4 py-md-5 px-4 px-md-3 text-body-secondary">
+        <div class="row">
+          <div class="col-lg-9 mb-3">
+            <a
+              href="/"
+              class="d-inline-flex align-items-center mb-2 text-body-emphasis text-decoration-none"
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Sangguniang_Kabataan_logo.svg/64px-Sangguniang_Kabataan_logo.svg.png"
+                alt="SK Bingag"
+                width="38"
+                height="38"
+                style="border-radius: 50%"
+                class="d-block me-2"
+              />
+              <span class="fs-5">SK Bingag</span>
+            </a>
+            <ul class="list-unstyled small">
+              <li class="mb-2">
+                Designed and built with
+                <i class="bi-bootstrap-fill"></i> Bootstrap and
+                <i class="bi-filetype-html"></i> HTML5 by
+                <a href="https://github.com/nnotwen">nnotwen</a>. Powered by
+                <i class="bi-github"></i> Github Pages.
+              </li>
+              <li class="mb-2">
+                Kindly note that this website dedicated to displaying tournament
+                schedules and standings operates independently. While developed
+                by a government official, it is not directly funded or endorsed
+                by the government.
+              </li>
+              <li class="mb-2">©2023 nnotwen. All rights reserved.</li>
+            </ul>
+          </div>
+          <div class="col-6 col-lg-2 offset-lg-1 mb-3">
+            <h5>Links</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <i class="bi-facebook"></i>
+                <a href="https://facebook.com/profile.php?id=100066955981913">
+                  Facebook
+                </a>
+              </li>
+              <li class="mb-2 disabled">
+                <i class="bi-twitter"></i>
+                <a href="#"> Twitter </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
