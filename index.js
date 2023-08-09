@@ -117,6 +117,16 @@ const volleyballStanding = {
   },
 };
 
+// LIGHT/DARK MODE PERSISTENCY
+$(function () {
+  const theme = localStorage.getItem("bs-theme") || "dark"; // dark is the default theme
+  $("html").attr("data-bs-theme", theme);
+  $(".theme-icon")
+    .removeClass(theme === "dark" ? "bi-cloud-moon" : "bi-cloud-sun")
+    .addClass(theme === "dark" ? "bi-cloud-sun" : "bi-cloud-moon");
+  $(".theme-name").html(theme === "dark" ? "Light Mode" : "Dark Mode");
+});
+
 // LIGHT/DARK MODE TOGGLE
 $(function () {
   $("#theme-toggle").on("click", function () {
@@ -129,6 +139,8 @@ $(function () {
       .addClass($theme === "dark" ? "bi-cloud-moon" : "bi-cloud-sun");
     // Toggler label
     $(".theme-name").html($theme === "dark" ? "Dark Mode" : "Light Mode");
+    // Set to localStorage
+    localStorage.setItem("bs-theme", $theme === "dark" ? "light" : "dark");
   });
 });
 
@@ -429,7 +441,9 @@ function sfcard(day, schedules, category, tr) {
       .appendTo($list);
   }
 
-  $(`<div class="card-footer text-body-secondary">${tr}</div>`).appendTo($card);
+  $(`<small class="card-footer text-body-secondary">${tr}</small>`).appendTo(
+    $card
+  );
 
   return $card;
 }
