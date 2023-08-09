@@ -81,8 +81,14 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
     />
-    <link rel="stylesheet" href="./index.css" />
+    <!-- BOOTSTRAP TABLE v1.22.1 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.css"
+    />
+    <!-- LOCAL FILES -->
     <script src="./plugins/moment.js"></script>
+    <link rel="stylesheet" href="./index.css" />
     <script src="./index.js"></script>
   </head>
   <body>
@@ -314,5 +320,22 @@
         </div>
       </div>
     </footer>
+    <script src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
+    <script>
+      function numberSort(sortName, sortOrder, data) {
+        var order = sortOrder === "desc" ? -1 : 1;
+        data.sort(function (a, b) {
+          var aa = +(a[sortName] + "").replace(/[^\d]/g, "");
+          var bb = +(b[sortName] + "").replace(/[^\d]/g, "");
+          if (aa < bb) {
+            return order * -1;
+          }
+          if (aa > bb) {
+            return order;
+          }
+          return 0;
+        });
+      }
+    </script>
   </body>
 </html>

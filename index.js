@@ -284,7 +284,7 @@ $(function () {
     ).appendTo($accordionHeader);
 
     const $groupDetailed = $(
-      '<table class="table table-striped table-hover text-center"></table>'
+      '<table class="table table-striped table-hover text-center" data-toggle="table" data-custom-sort="numberSort"></table>'
     ).appendTo($accordionBody);
 
     const $tablehead = $("<thead></thead>").appendTo($groupDetailed);
@@ -294,8 +294,12 @@ $(function () {
 
     const $headtr = $("<tr></tr>");
     for (const col of ["Rank", "Purok", "W", "L", "PCT", "GB", "PF", "PA"]) {
-      const $th = $(`<th scope="col">${col}</th>`).appendTo($headtr);
-      if (col === "Date") $th.addClass("text-start");
+      const $th = $(
+        `<th scope="col" data-sortable="true">${col}</th>`
+      ).appendTo($headtr);
+      if (["PCT", "PF", "PA"].includes(col)) {
+        $th.addClass("d-none d-sm-table-cell");
+      }
     }
     $headtr.appendTo($tablehead);
 
@@ -309,12 +313,12 @@ $(function () {
 
       // Points For
       const PF =
-        gameResults.reduce((a, b) => a + b[0], 0) / gameResults.length || "--";
+        gameResults.reduce((a, b) => a + b[0], 0) / gameResults.length || 0;
 
       // Points Against
 
       const PA =
-        gameResults.reduce((a, b) => a + b[1], 0) / gameResults.length || "--";
+        gameResults.reduce((a, b) => a + b[1], 0) / gameResults.length || 0;
 
       stats.push([purok, W, L, PCT, undefined, PF, PA]);
     }
@@ -366,7 +370,7 @@ $(function () {
     ).appendTo($accordionHeader);
 
     const $groupDetailed = $(
-      '<table class="table table-striped table-hover text-center"></table>'
+      '<table class="table table-striped table-hover text-center" data-toggle="table" data-custom-sort="numberSort"></table>'
     ).appendTo($accordionBody);
 
     const $tablehead = $("<thead></thead>").appendTo($groupDetailed);
@@ -376,8 +380,7 @@ $(function () {
 
     const $headtr = $("<tr></tr>");
     for (const col of ["Rank", "Purok", "W", "L", "PCT"]) {
-      const $th = $(`<th scope="col">${col}</th>`).appendTo($headtr);
-      if (col === "Date") $th.addClass("text-start");
+      $(`<th scope="col" data-sortable="true">${col}</th>`).appendTo($headtr);
     }
     $headtr.appendTo($tablehead);
 
