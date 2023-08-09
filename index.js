@@ -171,10 +171,18 @@ $(function () {
       : "No schedule";
 
     const footer = moment(new Date(heading)).add(18.5, "hours").calendar();
-
-    sfcard(heading, days[i] ? days[i].slice(2) : [], category, footer).appendTo(
-      $groupSummary
+    const card = sfcard(
+      heading,
+      days[i] ? days[i].slice(2) : [],
+      category,
+      footer
     );
+
+    if (i !== index) {
+      card.addClass("d-none d-sm-flex");
+    }
+
+    $groupSummary.append(card);
   }
 
   const $detailed = $("#basketball-schedule-tab-pane .schedule-detailed");
@@ -232,10 +240,18 @@ $(function () {
       : "No schedule";
 
     const footer = moment(new Date(heading)).add(18.5, "hours").calendar();
-
-    sfcard(heading, days[i] ? days[i].slice(2) : [], category, footer).appendTo(
-      $groupSummary
+    const card = sfcard(
+      heading,
+      days[i] ? days[i].slice(2) : [],
+      category,
+      footer
     );
+
+    if (i !== index) {
+      card.addClass("d-none d-sm-flex");
+    }
+
+    $groupSummary.append(card);
   }
 
   const $detailed = $("#volleyball-schedule-tab-pane .schedule-detailed");
