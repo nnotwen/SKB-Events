@@ -321,11 +321,21 @@ $(function () {
     );
 
     const $headtr = $("<tr></tr>");
-    for (const col of ["Rank", "Purok", "W", "L", "PCT", "GB", "PF", "PA"]) {
+    for (const col of [
+      "Rank",
+      "Purok",
+      "W",
+      "L",
+      "PCT",
+      "GB",
+      "PF",
+      "PA",
+      "DIFF",
+    ]) {
       const $th = $(
         `<th scope="col" data-sortable="true">${col}</th>`
       ).appendTo($headtr);
-      if (["PCT", "PF", "PA"].includes(col)) {
+      if (["PCT", "PF", "PA", "DIFF"].includes(col)) {
         $th.addClass("d-none d-sm-table-cell");
       }
     }
@@ -348,9 +358,10 @@ $(function () {
       const PA =
         gameResults.reduce((a, b) => a + b[1], 0) / gameResults.length || 0;
 
-      stats.push([purok, W, L, PCT, undefined, PF, PA]);
+      stats.push([purok, W, L, PCT, undefined, PF, PA, PF - PA]);
     }
 
+    stats = stats.sort((a, b) => a[2] - b[2]);
     stats = stats.sort((a, b) => b[1] - a[1]);
     stats = stats.map((x) => [
       x[0],
@@ -360,6 +371,7 @@ $(function () {
       stats[0][1] - x[1],
       isNaN(x[5]) ? x[5] : x[5].toFixed(1),
       isNaN(x[6]) ? x[6] : x[6].toFixed(1),
+      x[7],
     ]);
 
     for (const [i, row] of Object.entries(stats)) {
