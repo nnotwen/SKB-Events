@@ -10,7 +10,10 @@ const basketballSchedule = {
     8: "September",
   },
   // Not automatically sorted, please manually sort first
-  days: [["August", 7, [4, "6A", 0], [7, "6A", 2], ["2A", 7, 1]]],
+  days: [
+    ["August", 7, [4, "6A", 0], [7, "6A", 2], ["2A", 7, 1]],
+    ["August", 9, [3, 7, 0], [3, 1, 2], [5, "2B", 1]],
+  ],
 };
 
 // BASKETBALL STANDING
@@ -86,6 +89,7 @@ const volleyballSchedule = {
 };
 
 // VOLLEYBALL STANDING
+// Format [Team Score, Opponent Score]
 const volleyballStanding = {
   men: {
     1: [],
@@ -154,7 +158,7 @@ $(function () {
       ? `${days[i][0]} ${days[i][1]}, 2023`
       : "No schedule";
 
-    const footer = moment(new Date(heading)).add(18, "hours").fromNow();
+    const footer = moment(new Date(heading)).add(18.5, "hours").fromNow();
 
     sfcard(heading, days[i] ? days[i].slice(2) : [], category, footer).appendTo(
       $groupSummary
@@ -304,17 +308,13 @@ $(function () {
       const PCT = (parseInt(W / gameResults.length || 0) * 100).toFixed(1);
 
       // Points For
-      const wonPoints = gameResults.filter((x) => x[0] > x[1]);
       const PF =
-        wonPoints.reduce((a, b) => a + b[0], 0) /
-          wonPoints.filter((x) => x[0]).length || "--";
+        gameResults.reduce((a, b) => a + b[0], 0) / gameResults.length || "--";
 
       // Points Against
-      const lostPoints = gameResults.filter((x) => x[1] > x[0]);
 
       const PA =
-        lostPoints.reduce((a, b) => a + b[0], 0) /
-          lostPoints.filter((x) => x[0]).length || "--";
+        gameResults.reduce((a, b) => a + b[1], 0) / gameResults.length || "--";
 
       stats.push([purok, W, L, PCT, undefined, PF, PA]);
     }
