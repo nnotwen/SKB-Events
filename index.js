@@ -170,7 +170,7 @@ $(function () {
       ? `${days[i][0]} ${days[i][1]}, 2023`
       : "No schedule";
 
-    const footer = moment(new Date(heading)).add(18.5, "hours").fromNow();
+    const footer = moment(new Date(heading)).add(18.5, "hours").calendar();
 
     sfcard(heading, days[i] ? days[i].slice(2) : [], category, footer).appendTo(
       $groupSummary
@@ -231,7 +231,7 @@ $(function () {
       ? `${days[i][0]} ${days[i][1]}, 2023`
       : "No schedule";
 
-    const footer = moment(new Date(heading)).add(18.5, "hours").fromNow();
+    const footer = moment(new Date(heading)).add(18.5, "hours").calendar();
 
     sfcard(heading, days[i] ? days[i].slice(2) : [], category, footer).appendTo(
       $groupSummary
