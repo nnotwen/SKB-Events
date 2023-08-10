@@ -58,4 +58,7 @@ tr.row-disabled {
   --bs-table-color: var(--bs-tertiary-color);
   --bs-table-striped-color: var(--bs-tertiary-color);
   --bs-table-hover-color: var(--bs-tertiary-color);
+  --bs-table-bg: var(--bs-body-bg);
+  --bs-table-striped-bg: var(--bs-body-bg);
+  --bs-table-hover-bg: var(--bs-body-bg);
 }
