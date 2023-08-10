@@ -117,6 +117,16 @@ const volleyballStanding = {
   },
 };
 
+const htmlTitle = {
+  W: "Won",
+  L: "Lost",
+  PCT: "Win Percentage",
+  GB: "Games Behind",
+  PF: "Points For",
+  PA: "Points Against",
+  DIFF: "Difference (PF:PA)",
+};
+
 // LIGHT/DARK MODE PERSISTENCY
 $(function () {
   const theme = localStorage.getItem("bs-theme") || "dark"; // dark is the default theme
@@ -202,16 +212,32 @@ $(function () {
   }
   $headtr.appendTo($tablehead);
 
-  for (const row of days) {
+  for (const [i, row] of Object.entries(days)) {
     const $tr = $("<tr></tr>").appendTo($tablebody);
+
+    if (i < index) {
+      $tr.addClass("row-disabled");
+    }
+
+    if (i == index) {
+      $tr.addClass(
+        "border border-2 border-start-0 border-end-0 border-info row-emphasis"
+      );
+    }
+
     $(`<td><small>${row[0]} ${row[1]}, 2023</small></td>`)
       .addClass("text-start")
       .appendTo($tr);
+
     for (const item of row.splice(2)) {
       $(
-        `<td><small>${item[0]} vs ${item[1]} (${
+        `<td><span>${item[0]} vs ${
+          item[1]
+        }</span></br><button class="btn btn-sm ${
+          i < index ? "disabled " : ""
+        }tags btn-${i == index ? "info" : "success"} rounded-pill">${
           category[item[2]]
-        })</small></td>`
+        }</button></td>`
       ).appendTo($tr);
     }
   }
@@ -271,16 +297,34 @@ $(function () {
   }
   $headtr.appendTo($tablehead);
 
-  for (const row of days) {
+  for (const [i, row] of Object.entries(days)) {
     const $tr = $("<tr></tr>").appendTo($tablebody);
-    $(`<td><small>${row[0]} ${row[1]}, 2023</small></td>`)
+
+    if (i < index) {
+      $tr.addClass("row-disabled");
+    }
+
+    if (i == index) {
+      $tr.addClass(
+        "border border-2 border-start-0 border-end-0 border-info row-emphasis"
+      );
+    }
+
+    const style = i == index ? "strong" : "small";
+
+    $(`<td><${style}>${row[0]} ${row[1]}, 2023</${style}></td>`)
       .addClass("text-start")
       .appendTo($tr);
+
     for (const item of row.splice(2)) {
       $(
-        `<td><small>${item[0]} vs ${item[1]} (${
+        `<td><span>${item[0]} vs ${
+          item[1]
+        }</span></br><button class="btn btn-sm ${
+          i < index ? "disabled " : ""
+        }tags btn-${i == index ? "info" : "success"} rounded-pill">${
           category[item[2]]
-        })</small></td>`
+        }</button></td>`
       ).appendTo($tr);
     }
   }
@@ -332,9 +376,9 @@ $(function () {
       "PA",
       "DIFF",
     ]) {
-      const $th = $(
-        `<th scope="col" data-sortable="true">${col}</th>`
-      ).appendTo($headtr);
+      const $th = $(`<th scope="col" data-sortable="true">${col}</th>`)
+        .attr("title", htmlTitle[col])
+        .appendTo($headtr);
       if (["PCT", "PF", "PA", "DIFF"].includes(col)) {
         $th.addClass("d-none d-sm-table-cell");
       }
@@ -371,7 +415,7 @@ $(function () {
       stats[0][1] - x[1],
       isNaN(x[5]) ? x[5] : x[5].toFixed(1),
       isNaN(x[6]) ? x[6] : x[6].toFixed(1),
-      x[7],
+      x[7] > 0 ? `+${x[7]}` : x[7],
     ]);
 
     for (const [i, row] of Object.entries(stats)) {
@@ -466,6 +510,12 @@ function sfcard(day, schedules, category, tr) {
       .append(
         `<small>Game ${parseInt(i) + 1} - ${category[schedule[2]]}</small>`
       )
+      .appendTo($list);
+  }
+
+  if (!schedules.length) {
+    $('<i class="bi-calendar2-x text-secondary"></i>')
+      .css("font-size", "6.5rem")
       .appendTo($list);
   }
 
