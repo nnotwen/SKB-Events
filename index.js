@@ -196,6 +196,24 @@ $(function () {
   }
 
   const $detailed = $("#basketball-schedule-tab-pane .schedule-detailed");
+
+  const $toggleDisabled = $("<div></div>")
+    .addClass("form-check form-switch align-end")
+    .appendTo($detailed);
+
+  $("<input>").addClass("form-check-input").appendTo($toggleDisabled).attr({
+    type: "checkbox",
+    role: "switch",
+    id: "basketball-schedule-display-toggle",
+  });
+
+  $("<label>Show finished matches</label>")
+    .addClass("form-check-label")
+    .appendTo($toggleDisabled)
+    .attr({
+      for: "basketball-schedule-display-toggle",
+    });
+
   const $groupDetailed = $(
     '<table class="table table-striped table-hover text-center"></table>'
   ).appendTo($detailed);
@@ -216,7 +234,7 @@ $(function () {
     const $tr = $("<tr></tr>").appendTo($tablebody);
 
     if (i < index) {
-      $tr.addClass("row-disabled");
+      $tr.addClass("row-disabled d-none");
     }
 
     if (i == index) {
@@ -235,11 +253,17 @@ $(function () {
           item[1]
         }</span></br><button class="btn btn-sm ${
           i < index ? "disabled " : ""
-        }tags btn-${i == index ? "info" : "success"} rounded-pill">${
+        }tags btn-${i == index ? "info" : "secondary"} rounded-pill">${
           category[item[2]]
         }</button></td>`
       ).appendTo($tr);
     }
+  }
+
+  if ($tablebody.find("tr.row-disabled").length == days.length) {
+    $("<caption>No more upcoming match</caption>")
+      .addClass("text-center")
+      .appendTo($groupDetailed);
   }
 });
 
@@ -281,6 +305,24 @@ $(function () {
   }
 
   const $detailed = $("#volleyball-schedule-tab-pane .schedule-detailed");
+
+  const $toggleDisabled = $("<div></div>")
+    .addClass("form-check form-switch align-end")
+    .appendTo($detailed);
+
+  $("<input>").addClass("form-check-input").appendTo($toggleDisabled).attr({
+    type: "checkbox",
+    role: "switch",
+    id: "volleyball-schedule-display-toggle",
+  });
+
+  $("<label>Show finished matches</label>")
+    .addClass("form-check-label")
+    .appendTo($toggleDisabled)
+    .attr({
+      for: "volleyball-schedule-display-toggle",
+    });
+
   const $groupDetailed = $(
     '<table class="table table-striped table-hover text-center"></table>'
   ).appendTo($detailed);
@@ -301,7 +343,7 @@ $(function () {
     const $tr = $("<tr></tr>").appendTo($tablebody);
 
     if (i < index) {
-      $tr.addClass("row-disabled");
+      $tr.addClass("row-disabled d-none");
     }
 
     if (i == index) {
@@ -322,12 +364,34 @@ $(function () {
           item[1]
         }</span></br><button class="btn btn-sm ${
           i < index ? "disabled " : ""
-        }tags btn-${i == index ? "info" : "success"} rounded-pill">${
+        }tags btn-${i == index ? "info" : "secondary"} rounded-pill">${
           category[item[2]]
         }</button></td>`
       ).appendTo($tr);
     }
   }
+
+  if ($tablebody.find("tr.row-disabled").length == days.length) {
+    $("<caption>No more upcoming match</caption>")
+      .addClass("text-center")
+      .appendTo($groupDetailed);
+  }
+});
+
+// HIDE/SHOW FINISHED DATES TOGGLE FOR SCHEDULE
+$(function () {
+  $(".schedule-detailed .form-switch").on("click", function () {
+    const $input = $(this).find(".form-check-input");
+    const checked = $input.is(":checked");
+    const id = $input.attr("id");
+
+    $(`#${id.split("-")[0]}-schedule-tab-pane`)
+      .find(".table tbody tr")
+      .filter((_i, tr) => $(tr).hasClass("row-disabled"))
+      .each((_i, tr) => {
+        $(tr)[checked ? "removeClass" : "addClass"]("d-none");
+      });
+  });
 });
 
 // BASKETBALL STANDING
