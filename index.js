@@ -11,6 +11,7 @@ const basketballSchedule = {
   },
   // Not automatically sorted, please manually sort first
   days: [
+    ["August", 5, ["2B", "6B", 0], [3, 6, 1], ["2A", 4, 2]],
     ["August", 7, [4, "6A", 0], [7, "6A", 2], ["2A", 7, 1]],
     ["August", 9, [3, 7, 0], [3, 1, 2], [5, "2B", 1]],
   ],
