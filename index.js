@@ -159,223 +159,138 @@ moment.updateLocale("en", {
   invalidDate: "--",
 });
 
+// #SCHEDULE
 $(function () {
-  const $summary = $("#basketball-schedule-tab-pane .schedule-summary");
-  const $groupSummary = $('<div class="card-group"></div>').appendTo($summary);
+  for (const type of ["basketball", "volleyball"]) {
+    const $summary = $(`#${type}-schedule-tab-pane .schedule-summary`);
+    const $detailed = $(`#${type}-schedule-tab-pane .schedule-detailed`);
 
-  const months = basketballSchedule.month;
-  const days = basketballSchedule.days;
-  const category = basketballSchedule.category;
+    const $groupSummary = $("<div></div>")
+      .addClass("card-group")
+      .appendTo($summary);
 
-  const month = new Date().getMonth();
-  const day = new Date().getDate();
+    const schedules = {
+      basketball: {
+        month: basketballSchedule.month,
+        days: basketballSchedule.days,
+        category: basketballSchedule.category,
+      },
+      volleyball: {
+        month: volleyballSchedule.month,
+        days: volleyballSchedule.days,
+        category: volleyballSchedule.category,
+      },
+    };
 
-  let index = days.findIndex(
-    (x) => (x[0] === months[month] && x[1] >= day) || x[0] === months[month + 1]
-  );
+    const months = schedules[type].month;
+    const days = schedules[type].days;
+    const category = schedules[type].category;
 
-  if (index == -1) index = days.length;
+    const month = new Date().getMonth();
+    const day = new Date().getDate();
 
-  for (const i of [index - 1, index, index + 1]) {
-    const heading = days[i]
-      ? `${days[i][0]} ${days[i][1]}, 2023`
-      : "No schedule";
-
-    const footer = moment(new Date(heading)).add(18.5, "hours").calendar();
-    const card = sfcard(
-      heading,
-      days[i] ? days[i].slice(2) : [],
-      category,
-      footer
-    );
-
-    if (i !== index) {
-      card.addClass("d-none d-sm-flex");
-    }
-
-    $groupSummary.append(card);
-  }
-
-  const $detailed = $("#basketball-schedule-tab-pane .schedule-detailed");
-
-  const $toggleDisabled = $("<div></div>")
-    .addClass("form-check form-switch align-end")
-    .appendTo($detailed);
-
-  $("<input>").addClass("form-check-input").appendTo($toggleDisabled).attr({
-    type: "checkbox",
-    role: "switch",
-    id: "basketball-schedule-display-toggle",
-  });
-
-  $("<label>Show finished matches</label>")
-    .addClass("form-check-label")
-    .appendTo($toggleDisabled)
-    .attr({
-      for: "basketball-schedule-display-toggle",
+    let index = days.findIndex(function (x) {
+      const $1 = x[0] === months[month] && x[1] >= day;
+      const $2 = x[0] === months[month + 1];
+      return $1 || $2;
     });
 
-  const $groupDetailed = $(
-    '<table class="table table-striped table-hover text-center"></table>'
-  ).appendTo($detailed);
+    if (index == -1) index = days.length;
 
-  const $tablehead = $("<thead></thead>").appendTo($groupDetailed);
-  const $tablebody = $("<tbody class='align-middle'></tbody>").appendTo(
-    $groupDetailed
-  );
+    for (const i of [index - 1, index, index + 1]) {
+      const $$h = days[i] ? `${days[i][0]} ${days[i][1]}, 2023` : "No Schedule";
+      const $$d = days[i] ? days[i].slice(2) : [];
+      const $$f = moment(new Date($$h)).add(18.5, "hours").calendar();
 
-  const $headtr = $("<tr></tr>");
-  for (const col of ["Date", "Game 1", "Game 2", "Game 3"]) {
-    const $th = $(`<th scope="col">${col}</th>`).appendTo($headtr);
-    if (col === "Date") $th.addClass("text-start");
-  }
-  $headtr.appendTo($tablehead);
+      const $card = sfcard($$h, $$d, category, $$f);
 
-  for (const [i, row] of Object.entries(days)) {
-    const $tr = $("<tr></tr>").appendTo($tablebody);
+      if (i !== index) {
+        $card.addClass("d-none d-sm-flex");
+      }
 
-    if (i < index) {
-      $tr.addClass("row-disabled d-none");
+      $groupSummary.append($card);
     }
 
-    if (i == index) {
-      $tr.addClass(
-        "border border-2 border-start-0 border-end-0 border-info row-emphasis"
-      );
-    }
+    // Start of .schedule-detailed
+    const $td = $("<div></div>")
+      .addClass("form-check form-switch")
+      .appendTo($detailed);
 
-    $(`<td><small>${row[0]} ${row[1]}, 2023</small></td>`)
-      .addClass("text-start")
-      .appendTo($tr);
+    $("<input>")
+      .addClass("form-check-input")
+      .appendTo($td)
+      .attr({
+        type: "checkbox",
+        role: "switch",
+        id: `${type}-schedule-display-toggle`,
+      });
 
-    for (const item of row.splice(2)) {
-      $(
-        `<td><span>${item[0]} vs ${
-          item[1]
-        }</span></br><button class="btn btn-sm ${
-          i < index ? "disabled " : ""
-        }tags btn-${i == index ? "info" : "secondary"} rounded-pill">${
-          category[item[2]]
-        }</button></td>`
-      ).appendTo($tr);
-    }
-  }
+    $("<label>Show finished matches</label>")
+      .addClass("form-check-label")
+      .appendTo($td)
+      .attr({
+        for: `${type}-schedule-display-toggle`,
+      });
 
-  if ($tablebody.find("tr.row-disabled").length == days.length) {
-    $("<caption>No more upcoming match</caption>")
-      .addClass("text-center")
+    const $groupDetailed = $("<table></table>")
+      .addClass("table table-striped table-hover text-center")
+      .appendTo($detailed);
+
+    const $thead = $("<thead></thead>").appendTo($groupDetailed);
+    const $tbody = $("<tbody></tbody>")
+      .addClass("align-middle")
       .appendTo($groupDetailed);
-  }
-});
 
-$(function () {
-  const $summary = $("#volleyball-schedule-tab-pane .schedule-summary");
-  const $groupSummary = $('<div class="card-group"></div>').appendTo($summary);
+    const $headtr = $("<tr></tr>").appendTo($thead);
+    const tableHeaders = {
+      basketball: ["Date", "Game 1", "Game 2", "Game 3"],
+      volleyball: ["Date", "Game 1", "Game 2", "Game 3", "Game 4"],
+    };
 
-  const months = volleyballSchedule.month;
-  const days = volleyballSchedule.days;
-  const category = volleyballSchedule.category;
+    for (const col of tableHeaders[type]) {
+      const $th = $(`<th>${col}</th>`).attr("scope", "col").appendTo($headtr);
 
-  const month = new Date().getMonth();
-  const day = new Date().getDate();
-
-  let index = days.findIndex(
-    (x) => (x[0] === months[month] && x[1] >= day) || x[0] === months[month + 1]
-  );
-
-  if (index == -1) index = days.length;
-
-  for (const i of [index - 1, index, index + 1]) {
-    const heading = days[i]
-      ? `${days[i][0]} ${days[i][1]}, 2023`
-      : "No schedule";
-
-    const footer = moment(new Date(heading)).add(18.5, "hours").calendar();
-    const card = sfcard(
-      heading,
-      days[i] ? days[i].slice(2) : [],
-      category,
-      footer
-    );
-
-    if (i !== index) {
-      card.addClass("d-none d-sm-flex");
+      if (col === "Date") $th.addClass("text-start");
     }
 
-    $groupSummary.append(card);
-  }
+    for (const [i, row] of Object.entries(days)) {
+      const $tr = $("<tr></tr>").appendTo($tbody);
 
-  const $detailed = $("#volleyball-schedule-tab-pane .schedule-detailed");
+      if (i < index) $tr.addClass("row-disabled d-none");
 
-  const $toggleDisabled = $("<div></div>")
-    .addClass("form-check form-switch align-end")
-    .appendTo($detailed);
+      if (i == index)
+        $tr.addClass(
+          "border border-2 border-start-0 border-end-0 border-info row-emphasis"
+        );
 
-  $("<input>").addClass("form-check-input").appendTo($toggleDisabled).attr({
-    type: "checkbox",
-    role: "switch",
-    id: "volleyball-schedule-display-toggle",
-  });
+      $(`<td><small>${row[0]} ${row[1]}, 2023</small></td>`)
+        .addClass("text-start")
+        .appendTo($tr);
 
-  $("<label>Show finished matches</label>")
-    .addClass("form-check-label")
-    .appendTo($toggleDisabled)
-    .attr({
-      for: "volleyball-schedule-display-toggle",
-    });
+      for (const item of row.splice(2)) {
+        const $L1 = $("<span></span>").html(`${item[0]} vs ${item[1]}`);
+        const $L2 = $("<span></span>");
 
-  const $groupDetailed = $(
-    '<table class="table table-striped table-hover text-center"></table>'
-  ).appendTo($detailed);
+        const $L2btn = $("<button></button>")
+          .html(category[item[2]])
+          .addClass("btn btn-sm tags rounded-pill")
+          .addClass(i == index ? "btn-info" : "btn-secondary")
+          .appendTo($L2);
 
-  const $tablehead = $("<thead></thead>").appendTo($groupDetailed);
-  const $tablebody = $("<tbody class='align-middle'></tbody>").appendTo(
-    $groupDetailed
-  );
+        if (i < index) {
+          $L2btn.addClass("disabled");
+        }
 
-  const $headtr = $("<tr></tr>");
-  for (const col of ["Date", "Game 1", "Game 2", "Game 3", "Game 4"]) {
-    const $th = $(`<th scope="col">${col}</th>`).appendTo($headtr);
-    if (col === "Date") $th.addClass("text-start");
-  }
-  $headtr.appendTo($tablehead);
-
-  for (const [i, row] of Object.entries(days)) {
-    const $tr = $("<tr></tr>").appendTo($tablebody);
-
-    if (i < index) {
-      $tr.addClass("row-disabled d-none");
+        $("<td></td>").append($L1).append("</br>").append($L2).appendTo($tr);
+      }
     }
 
-    if (i == index) {
-      $tr.addClass(
-        "border border-2 border-start-0 border-end-0 border-info row-emphasis"
-      );
+    if ($tbody.find("tr.row-disabled").length == days.length) {
+      $("<caption></caption>")
+        .html("No more upcoming match.")
+        .addClass("text-center")
+        .appendTo($groupDetailed);
     }
-
-    const style = i == index ? "strong" : "small";
-
-    $(`<td><${style}>${row[0]} ${row[1]}, 2023</${style}></td>`)
-      .addClass("text-start")
-      .appendTo($tr);
-
-    for (const item of row.splice(2)) {
-      $(
-        `<td><span>${item[0]} vs ${
-          item[1]
-        }</span></br><button class="btn btn-sm ${
-          i < index ? "disabled " : ""
-        }tags btn-${i == index ? "info" : "secondary"} rounded-pill">${
-          category[item[2]]
-        }</button></td>`
-      ).appendTo($tr);
-    }
-  }
-
-  if ($tablebody.find("tr.row-disabled").length == days.length) {
-    $("<caption>No more upcoming match</caption>")
-      .addClass("text-center")
-      .appendTo($groupDetailed);
   }
 });
 
