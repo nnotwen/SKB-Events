@@ -1,20 +1,52 @@
-// BASKETBALL SCHEDULE
-const basketballSchedule = {
-  category: {
-    0: "Midget",
-    1: "Junior",
-    2: "Senior",
+const schedules = {
+  basketball: {
+    category: {
+      0: "Midget",
+      1: "Junior",
+      2: "Senior",
+    },
+    month: {
+      7: "August",
+      8: "September",
+    },
+    // Not automatically sorted, please manually sort first
+    days: [
+      ["August", 5, ["2B", "6B", 0], [3, 6, 1], ["2A", 4, 2]],
+      ["August", 7, [4, "6A", 0], [7, "6A", 2], ["2A", 7, 1]],
+      ["August", 9, [3, 7, 0], [3, 1, 2], [5, "2B", 1]],
+    ],
   },
-  month: {
-    7: "August",
-    8: "September",
+  volleyball: {
+    category: {
+      0: "Men",
+      1: "Women",
+    },
+    month: {
+      7: "August",
+      8: "September",
+    },
+    // Not automatically sorted, please manually sort first
+    // Month, day, ...[P1, P2, category]
+    days: [
+      ["August", 10, ["6B", 3, 1], [1, 4, 1], [6, 7, 0], ["2A", "4A", 0]],
+      ["August", 15, [7, "6A", 1], [3, "2A", 1], ["2B", 3, 0], [5, 1, 0]],
+      ["August", 17, ["6A", 1, 1], [4, "6B", 1], [1, "2B", 0], [3, "2A", 0]],
+      ["August", 22, [1, "2A", 1], [7, 3, 1], ["4A", 6, 0], [7, "4B", 0]],
+      [
+        "August",
+        24,
+        ["6A", 4, 1],
+        ["2A", "6B", 1],
+        ["2A", "4B", 0],
+        ["2B", 7, 0],
+      ],
+      ["August", 29, [4, 7, 1], [3, 1, 1], [5, "4A", 0], [1, 3, 0]],
+      ["August", 31, [7, "6B", 1], ["6A", "2A", 1], [3, 5, 0], ["4A", "2B", 0]],
+      ["September", 5, [4, 3, 1], ["6B", 1, 1], [7, "2A", 0], [3, 6, 0]],
+      ["September", 7, [3, "6A", 1], ["2A", 7, 1], ["2B", 6, 0], [5, "4B", 0]],
+      ["September", 12, ["2A", 4, 1], ["6B", "6A", 1], [1, 7, 0], [3, "4A", 0]],
+    ],
   },
-  // Not automatically sorted, please manually sort first
-  days: [
-    ["August", 5, ["2B", "6B", 0], [3, 6, 1], ["2A", 4, 2]],
-    ["August", 7, [4, "6A", 0], [7, "6A", 2], ["2A", 7, 1]],
-    ["August", 9, [3, 7, 0], [3, 1, 2], [5, "2B", 1]],
-  ],
 };
 
 // BASKETBALL STANDING
@@ -54,39 +86,6 @@ const basketballStanding = {
     "6B": [],
     7: [[94, 91]],
   },
-};
-
-// VOLLEYBALL SCHEDULE
-const volleyballSchedule = {
-  category: {
-    0: "Men",
-    1: "Women",
-  },
-  month: {
-    7: "August",
-    8: "September",
-  },
-  // Not automatically sorted, please manually sort first
-  // Month, day, ...[P1, P2, category]
-  days: [
-    ["August", 10, ["6B", 3, 1], [1, 4, 1], [6, 7, 0], ["2A", "4A", 0]],
-    ["August", 15, [7, "6A", 1], [3, "2A", 1], ["2B", 3, 0], [5, 1, 0]],
-    ["August", 17, ["6A", 1, 1], [4, "6B", 1], [1, "2B", 0], [3, "2A", 0]],
-    ["August", 22, [1, "2A", 1], [7, 3, 1], ["4A", 6, 0], [7, "4B", 0]],
-    [
-      "August",
-      24,
-      ["6A", 4, 1],
-      ["2A", "6B", 1],
-      ["2A", "4B", 0],
-      ["2B", 7, 0],
-    ],
-    ["August", 29, [4, 7, 1], [3, 1, 1], [5, "4A", 0], [1, 3, 0]],
-    ["August", 31, [7, "6B", 1], ["6A", "2A", 1], [3, 5, 0], ["4A", "2B", 0]],
-    ["September", 5, [4, 3, 1], ["6B", 1, 1], [7, "2A", 0], [3, 6, 0]],
-    ["September", 7, [3, "6A", 1], ["2A", 7, 1], ["2B", 6, 0], [5, "4B", 0]],
-    ["September", 12, ["2A", 4, 1], ["6B", "6A", 1], [1, 7, 0], [3, "4A", 0]],
-  ],
 };
 
 // VOLLEYBALL STANDING
@@ -168,19 +167,6 @@ $(function () {
     const $groupSummary = $("<div></div>")
       .addClass("card-group")
       .appendTo($summary);
-
-    const schedules = {
-      basketball: {
-        month: basketballSchedule.month,
-        days: basketballSchedule.days,
-        category: basketballSchedule.category,
-      },
-      volleyball: {
-        month: volleyballSchedule.month,
-        days: volleyballSchedule.days,
-        category: volleyballSchedule.category,
-      },
-    };
 
     const months = schedules[type].month;
     const days = schedules[type].days;
