@@ -362,6 +362,10 @@ $(function () {
         if (["PCT", "PF", "PA", "DIFF"].includes(col)) {
           $th.addClass("d-none d-sm-table-cell");
         }
+
+        if (htmlTitle[col]) {
+          $th.attr("title", htmlTitle[col]);
+        }
       }
 
       const stats = Object.entries(standings[type][category])
