@@ -49,6 +49,72 @@ const schedules = {
   },
 };
 
+const standings = {
+  basketball: {
+    midget: {
+      1: [],
+      "2A": [],
+      "2B": [],
+      3: [],
+      4: [[110, 112]],
+      5: [],
+      "6A": [[112, 110]],
+      "6B": [],
+      7: [],
+    },
+    junior: {
+      1: [],
+      "2A": [[88, 89]],
+      "2B": [],
+      3: [],
+      "4A": [],
+      "4B": [],
+      5: [],
+      "6A": [],
+      "6B": [],
+      7: [[89, 88]],
+    },
+    senior: {
+      1: [],
+      "2A": [],
+      "2B": [],
+      3: [],
+      "4A": [],
+      "4B": [],
+      5: [],
+      "6A": [[91, 94]],
+      "6B": [],
+      7: [[94, 91]],
+    },
+  },
+  volleyball: {
+    men: {
+      1: [],
+      "2A": [],
+      "2B": [],
+      3: [],
+      "4A": [],
+      "4B": [],
+      5: [],
+      "6A": [],
+      "6B": [],
+      7: [],
+    },
+    women: {
+      1: [],
+      "2A": [],
+      "2B": [],
+      3: [],
+      "4A": [],
+      "4B": [],
+      5: [],
+      "6A": [],
+      "6B": [],
+      7: [],
+    },
+  },
+};
+
 // BASKETBALL STANDING
 const basketballStanding = {
   midget: {
@@ -160,7 +226,7 @@ moment.updateLocale("en", {
 
 // #SCHEDULE
 $(function () {
-  for (const type of ["basketball", "volleyball"]) {
+  for (const type of Object.keys(schedules)) {
     const $summary = $(`#${type}-schedule-tab-pane .schedule-summary`);
     const $detailed = $(`#${type}-schedule-tab-pane .schedule-detailed`);
 
@@ -198,7 +264,7 @@ $(function () {
     }
 
     // Start of .schedule-detailed
-    const $td = $("<div></div>")
+    const $td = $("<form></form>")
       .addClass("form-check form-switch")
       .appendTo($detailed);
 
@@ -211,7 +277,8 @@ $(function () {
         id: `${type}-schedule-display-toggle`,
       });
 
-    $("<label>Show finished matches</label>")
+    $("<label></label>")
+      .html("Display concluded games")
       .addClass("form-check-label")
       .appendTo($td)
       .attr({
@@ -296,162 +363,119 @@ $(function () {
   });
 });
 
-// BASKETBALL STANDING
+// #STANDING
 $(function () {
-  for (const [i, category] of Object.entries(["midget", "junior", "senior"])) {
-    const $detailed = $("#basketball-standing-tab-pane .standing-detailed");
+  for (const type of Object.keys(standings)) {
+    for (const [i, category] of Object.keys(standings[type]).entries()) {
+      const $detailed = $(`#${type}-standing-tab-pane .standing-detailed`);
 
-    const $group = $('<div class="accordion-item"></div>')
-      .append("")
-      .appendTo($detailed);
+      const $item = $("<div></div>")
+        .addClass("accordion-item")
+        .appendTo($detailed);
 
-    const $accordionHeader = $(
-      '<h5 class="accordion-header text-center pt-3 pb-1"></h5>'
-    ).appendTo($group);
+      const $aheader = $("<h5></h5>")
+        .addClass("accordion-header text-center pt-3 pb-1")
+        .appendTo($item);
 
-    const $accordionBody = $(
-      `<div id="${category}" class="accordion-collapse collapse${
-        category === "midget" ? " show" : ""
-      }" data-bs-parent="#basketball-standing">`
-    ).appendTo($group);
+      const $abody = $("<div></div>")
+        .attr({ id: category, "data-bs-parent": `#${type}-standing` })
+        .addClass("accordion-collapse collapse show")
+        .appendTo($item);
 
-    $(
-      `<button class="accordion-button${
-        i == 0 ? "" : " collapsed"
-      }" type="button" data-bs-toggle="collapse" data-bs-target="#${category}" aria-expanded="true" aria-controls="${category}">${category.toUpperCase()}</button>`
-    ).appendTo($accordionHeader);
+      const $abtn = $("<button></button>")
+        .addClass("accordion-button")
+        .html(category.toUpperCase())
+        .appendTo($aheader)
+        .attr({
+          type: "button",
+          "data-bs-toggle": "collapse",
+          "data-bs-target": `#${category}`,
+          "aria-expanded": true,
+          "aria-controls": category,
+        });
 
-    const $groupDetailed = $(
-      '<table class="table table-striped table-hover text-center" data-toggle="table" data-custom-sort="numberSort"></table>'
-    ).appendTo($accordionBody);
-
-    const $tablehead = $("<thead></thead>").appendTo($groupDetailed);
-    const $tablebody = $("<tbody class='align-middle'></tbody>").appendTo(
-      $groupDetailed
-    );
-
-    const $headtr = $("<tr></tr>");
-    for (const col of [
-      "Rank",
-      "Purok",
-      "W",
-      "L",
-      "PCT",
-      "GB",
-      "PF",
-      "PA",
-      "DIFF",
-    ]) {
-      const $th = $(`<th scope="col" data-sortable="true">${col}</th>`)
-        .attr("title", htmlTitle[col])
-        .appendTo($headtr);
-      if (["PCT", "PF", "PA", "DIFF"].includes(col)) {
-        $th.addClass("d-none d-sm-table-cell");
+      if (i != 0) {
+        $abtn.addClass("collapsed");
+        $abody.removeClass("show");
       }
-    }
-    $headtr.appendTo($tablehead);
 
-    let stats = [];
-    for (const [purok, gameResults] of Object.entries(
-      basketballStanding[category]
-    )) {
-      const W = gameResults.filter((x) => x[0] > x[1]).length;
-      const L = gameResults.length - W;
-      const PCT = (parseInt(W / gameResults.length || 0) * 100).toFixed(1);
+      const $groupDetailed = $("<table></table>")
+        .addClass("table table-striped table-hover text-center")
+        .appendTo($abody)
+        .attr({
+          "data-toggle": "table",
+          "data-custom-sort": "numberSort",
+        });
 
-      // Points For
-      const PF =
-        gameResults.reduce((a, b) => a + b[0], 0) / gameResults.length || 0;
+      const $thead = $("<thead></thead>").appendTo($groupDetailed);
+      const $tbody = $("<tbody></tbody>")
+        .addClass("align-middle")
+        .appendTo($groupDetailed);
 
-      // Points Against
+      const $headtr = $("<tr></tr>").appendTo($thead);
+      class Stats {
+        constructor(data = []) {
+          this.W = data.filter((x) => x[0] > x[1]).length;
+          this.L = data.filter((x) => x[1] > x[0]).length;
+          this.PCT = (parseInt(this.W / data.length || 0) * 100).toFixed(1);
+          this.GB = null;
+          this.PF = data.reduce((a, b) => a + b[0], 0) / data.length || 0;
+          this.PA = data.reduce((a, b) => a + b[1], 0) / data.length || 0;
+          this.DIFF = this.PF - this.PA;
 
-      const PA =
-        gameResults.reduce((a, b) => a + b[1], 0) / gameResults.length || 0;
+          if (this.DIFF > 0) this.DIFF = "+" + this.DIFF;
 
-      stats.push([purok, W, L, PCT, undefined, PF, PA, PF - PA]);
-    }
+          this.PF = this.PF.toFixed(1);
+          this.PA = this.PA.toFixed(1);
+        }
 
-    stats = stats.sort((a, b) => a[2] - b[2]);
-    stats = stats.sort((a, b) => b[1] - a[1]);
-    stats = stats.map((x) => [
-      x[0],
-      x[1],
-      x[2],
-      x[3],
-      stats[0][1] - x[1],
-      isNaN(x[5]) ? x[5] : x[5].toFixed(1),
-      isNaN(x[6]) ? x[6] : x[6].toFixed(1),
-      x[7] > 0 ? `+${x[7]}` : x[7],
-    ]);
-
-    for (const [i, row] of Object.entries(stats)) {
-      const $tr = $("<tr></tr>").appendTo($tablebody);
-      $(`<th scope="row"><small>${parseInt(i) + 1}</small></th>`).appendTo($tr);
-      for (const item of row) {
-        $(`<td><small>${item}</small></td>`).appendTo($tr);
+        values() {
+          return Object.values(this);
+        }
       }
-    }
-  }
-});
 
-// VOLLEYBALL STANDING
-$(function () {
-  for (const [i, category] of Object.entries(["men", "women"])) {
-    const $detailed = $("#volleyball-standing-tab-pane .standing-detailed");
+      for (const col of ["Rank", "Purok", ...Object.keys(new Stats())]) {
+        if (type == "volleyball" && ["PF", "PA", "DIFF"].includes(col)) {
+          continue;
+        }
+        const $th = $("<th></th>")
+          .html(col)
+          .appendTo($headtr)
+          .attr({ scope: "col", "data-sortable": true });
 
-    const $group = $('<div class="accordion-item"></div>')
-      .append("")
-      .appendTo($detailed);
+        if (["PCT", "PF", "PA", "DIFF"].includes(col)) {
+          $th.addClass("d-none d-sm-table-cell");
+        }
+      }
 
-    const $accordionHeader = $(
-      '<h5 class="accordion-header text-center pt-3 pb-1"></h5>'
-    ).appendTo($group);
+      const stats = Object.entries(standings[type][category])
+        .map(([p, data]) => [p, ...new Stats(data).values()])
+        .sort((a, b) => a[2] - b[2])
+        .sort((a, b) => b[1] - a[1]);
 
-    const $accordionBody = $(
-      `<div id="${category}" class="accordion-collapse collapse${
-        i == 0 ? " show" : ""
-      }" data-bs-parent="#volleyball-standing">`
-    ).appendTo($group);
+      for (const [i, row] of Object.entries(stats)) {
+        const $tr = $("<tr></tr>").appendTo($tbody);
+        const $th = $("<th></th>").appendTo($tr);
 
-    $(
-      `<button class="accordion-button${
-        i == 0 ? "" : " collapsed"
-      }" type="button" data-bs-toggle="collapse" data-bs-target="#${category}" aria-expanded="true" aria-controls="${category}">${category.toUpperCase()}</button>`
-    ).appendTo($accordionHeader);
+        $("<small></small>")
+          .html(parseInt(i) + 1)
+          .appendTo($th);
 
-    const $groupDetailed = $(
-      '<table class="table table-striped table-hover text-center" data-toggle="table" data-custom-sort="numberSort"></table>'
-    ).appendTo($accordionBody);
+        if (type == "volleyball") {
+          row.splice(5, 3);
+        }
 
-    const $tablehead = $("<thead></thead>").appendTo($groupDetailed);
-    const $tablebody = $("<tbody class='align-middle'></tbody>").appendTo(
-      $groupDetailed
-    );
+        for (const [i, item] of row.entries()) {
+          const $td = $("<td></td>").appendTo($tr);
 
-    const $headtr = $("<tr></tr>");
-    for (const col of ["Rank", "Purok", "W", "L", "PCT"]) {
-      $(`<th scope="col" data-sortable="true">${col}</th>`).appendTo($headtr);
-    }
-    $headtr.appendTo($tablehead);
-
-    let stats = [];
-    for (const [purok, gameResults] of Object.entries(
-      volleyballStanding[category]
-    )) {
-      const W = gameResults.filter((x) => x[0] > x[1]).length;
-      const L = gameResults.length - W;
-      const PCT = (parseInt(W / gameResults.length || 0) * 100).toFixed(1);
-
-      stats.push([purok, W, L, PCT]);
-    }
-
-    stats = stats.sort((a, b) => b[1] - a[1]);
-
-    for (const [i, row] of Object.entries(stats)) {
-      const $tr = $("<tr></tr>").appendTo($tablebody);
-      $(`<th scope="row"><small>${parseInt(i) + 1}</small></th>`).appendTo($tr);
-      for (const item of row) {
-        $(`<td><small>${item}</small></td>`).appendTo($tr);
+          if (i == 4) {
+            $("<small></small>")
+              .html(stats[0][1] - row[1])
+              .appendTo($td);
+          } else {
+            $("<small></small>").html(item).appendTo($td);
+          }
+        }
       }
     }
   }
