@@ -93,6 +93,7 @@
     <script src="./index.js"></script>
   </head>
   <body>
+    <div class="modal" id="rules"></div>
     <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <a class="navbar-brand text-truncate" href="#">
@@ -134,10 +135,10 @@
                 ><i class="bi-clipboard2-pulse me-2"></i>Standing</a
               >
             </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="#"
-                ><i class="bi-file-ruled me-2"></i>Rules</a
-              >
+            <li class="nav-item" data-bs-toggle="modal" data-bs-target="#rules">
+              <a class="nav-link" aria-current="page" style="cursor: pointer">
+                <i class="bi-file-ruled me-2"></i>Rules
+              </a>
             </li>
           </ul>
           <button class="btn btn-outline-secondary" id="theme-toggle">

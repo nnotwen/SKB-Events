@@ -109,6 +109,151 @@ const htmlTitle = {
   DIFF: "Difference (PF:PA)",
 };
 
+const rules = [
+  {
+    subheading: "Tournament Committee Decisions",
+    content:
+      "All final decisions regarding grievances, such as protests and eligibility, are made by the tournament committee.",
+  },
+  {
+    subheading: "Entrance Fee",
+    content: "There is no entrance fee required.",
+  },
+  {
+    subheading: "Roster Submission",
+    content:
+      "Teams must submit their rosters to the tournament committee before the final tournament briefing. No changes can be made after this briefing.",
+  },
+  {
+    subheading: "Protests and Concerns",
+    content:
+      "Protests or concerns will only be addressed on the day of the briefing.",
+  },
+  {
+    subheading: "Player Eligibility and Forfeits",
+    content:
+      "Using ineligible players not listed on the roster will result in a forfeit. The team manager is responsible for ensuring all players are eligible and have signed the roster.",
+  },
+  {
+    subheading: "Property Damage",
+    content:
+      "Intentional property damage will lead to penalties, including payment for damages and automatic suspension from the next game.",
+  },
+  {
+    subheading: "Accidental Damage",
+    content: "Exemptions may apply for accidental damage during the game.",
+  },
+  {
+    subheading: "Playing for One Team Only",
+    content:
+      "Players cannot play for more than one team during the tournament. Violating this rule leads to forfeits for relevant games and associated teams.",
+  },
+  {
+    subheading: "Team Conduct",
+    content:
+      "Team captains/managers are responsible for their team’s behavior. Those under the influence of substances can be expelled from games and tournaments.",
+  },
+  {
+    subheading: "Fiba Rules",
+    content: "All Fiba Rules are applicable.",
+  },
+  {
+    subheading: "Timeliness",
+    content:
+      "Teams must be on time for games, as game time is forfeit time. A ten-minute grace period will be given.",
+  },
+  {
+    subheading: "Bracket Times and Forfeits",
+    content:
+      "Estimated times are provided on the bracket. Teams should be present one hour before their game to avoid forfeits.",
+  },
+  {
+    subheading: "Fighting and Ejections",
+    content:
+      "Fighting, on or off the court, leads to ejection from the game and gymnasium, along with a suspension for the next game.",
+  },
+  {
+    subheading: "Parental Consent",
+    content:
+      "Players under 18 must have a parent or guardian sign the release form.",
+  },
+  {
+    subheading: "Game Fixing",
+    content:
+      "If game fixing is detected between teams, the involved teams will be forfeited from the tournament.",
+  },
+];
+
+// RULES MODAL
+$(function () {
+  const $modal = $("#rules").addClass("fade modal-lg").attr({
+    tabindex: -1,
+    "data-bs-backdrop": "static",
+    "data-bs-keyboard": false,
+    "aria-labelledby": "rulesModalLabel",
+    "aria-hidden": true,
+  });
+
+  const $dialogue = $("<div></div>")
+    .addClass("modal-dialog modal-dialog-centered")
+    .appendTo($modal);
+
+  const $content = $("<div></div>")
+    .addClass("modal-content")
+    .appendTo($dialogue);
+
+  const $header = $("<div></div>").addClass("modal-header").appendTo($content);
+  const $body = $("<div></div>").addClass("modal-body").appendTo($content);
+  const $footer = $("<div></div>").addClass("modal-footer").appendTo($content);
+
+  $("<div></div>")
+    .addClass("modal-title fs-5")
+    .attr("id", "modalRulesLabel")
+    .appendTo($header)
+    .append($('<i class="bi-file-check-fill me-2"></i>'))
+    .append("Rules");
+
+  $("<button></button>")
+    .addClass("btn btn-close")
+    .attr({ "data-bs-dismiss": "modal", "aria-label": "Close" })
+    .appendTo($header);
+
+  $("<button></button>")
+    .attr({
+      type: "button",
+      "data-bs-dismiss": "modal",
+    })
+    .addClass("btn btn-secondary")
+    .html("Close")
+    .appendTo($footer);
+
+  const $ol = $("<ol></ol>")
+    .addClass("list-group list-group-flush list-group-numbered")
+    .appendTo($body);
+
+  for (const rule of rules) {
+    const $li = $("<li></li>")
+      .appendTo($ol)
+      .addClass(
+        "list-group-item d-flex justify-content-between align-items-start"
+      );
+
+    const $subheading = $("<div></div>")
+      .html(rule.subheading)
+      .addClass("fw-bold");
+
+    const $content = $("<p></p>")
+      .html(rule.content)
+      .addClass("text-secondary-emphasis");
+
+    $("<div></div>")
+      .addClass("ms-2 me-auto")
+      .appendTo($li)
+      .append($subheading)
+      .append($content);
+  }
+});
+
 // LIGHT/DARK MODE PERSISTENCY
 $(function () {
   const theme = localStorage.getItem("bs-theme") || "dark"; // dark is the default theme
