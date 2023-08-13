@@ -482,36 +482,41 @@ $(function () {
 });
 
 // schedule-featured-card
+
 function sfcard(day, schedules, category, tr) {
-  const $card = $('<div class="card text-center"></div>');
-  $(`<div class="card-header">${day}</div>`).appendTo($card);
+  const $card = $("<div></div>").addClass("card text-center");
+  $("<div></div>").addClass("card-header").html(day).appendTo($card);
 
-  const $body = $('<div class="card-body"></div>').appendTo($card);
-
-  const $list = $('<div class="list-group list-group-flush"></div>').appendTo(
-    $body
-  );
+  const $body = $("<div></div>").addClass("card-body").appendTo($card);
+  const $list = $("<div></div>")
+    .addClass("list-group list-group-flush")
+    .appendTo($body);
 
   for (const [i, schedule] of Object.entries(schedules)) {
-    $('<li class="list-group-item"></li>')
-      .append(
-        `<strong>Purok ${schedule[0]} vs Purok ${schedule[1]}</strong></br>`
-      )
-      .append(
-        `<small>Game ${parseInt(i) + 1} - ${category[schedule[2]]}</small>`
-      )
-      .appendTo($list);
+    const $item = $("<li></li>").addClass("list-group-item").appendTo($list);
+
+    $("<strong></strong>")
+      .html(`Purok ${schedule[0]} vs Purok ${schedule[1]}`)
+      .appendTo($item);
+
+    $("</br>").appendTo($item);
+
+    $("<small></small>")
+      .html(`Game ${parseInt(i) + 1} - ${category[schedule[2]]}`)
+      .appendTo($item);
   }
 
   if (!schedules.length) {
-    $('<i class="bi-calendar2-x text-secondary"></i>')
+    $("<i></i>")
+      .addClass("bi-calendar2-x text-secondary")
       .css("font-size", "6.5rem")
       .appendTo($list);
   }
 
-  $(`<small class="card-footer text-body-secondary">${tr}</small>`).appendTo(
-    $card
-  );
+  $("<small></small>")
+    .addClass("card-footer text-body-secondary")
+    .html(tr)
+    .appendTo($card);
 
   return $card;
 }
