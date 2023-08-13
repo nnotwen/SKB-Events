@@ -372,10 +372,15 @@ $(function () {
       for (const [i, row] of Object.entries(stats)) {
         const $tr = $("<tr></tr>").appendTo($tbody);
         const $th = $("<th></th>").appendTo($tr);
+        let rank = parseInt(i) + 1;
 
-        $("<small></small>")
-          .html(parseInt(i) + 1)
-          .appendTo($th);
+        if (i == 0) {
+          rank = $("<i></i>").addClass("bi-trophy-fill text-warning");
+        } else {
+          rank = parseInt(i) + 1;
+        }
+
+        $("<small></small>").html(rank).appendTo($th);
 
         if (type == "volleyball") {
           row.splice(5, 3);
