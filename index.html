@@ -95,7 +95,7 @@
   <body>
     <div class="modal" id="rules"></div>
     <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
+      <div class="container-fluid mx-0 mx-lg-3">
         <a class="navbar-brand text-truncate" href="#">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Sangguniang_Kabataan_logo.svg/64px-Sangguniang_Kabataan_logo.svg.png"
@@ -119,32 +119,68 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item px-lg-2">
               <a class="nav-link active" aria-current="page" href="#">
                 <i class="bi-house me-2"></i>Home</a
               >
             </li>
-            <li class="nav-item">
+            <li class="nav-item px-lg-2">
               <a class="nav-link" aria-current="page" href="#schedule"
                 ><i class="bi-calendar-event me-2"></i>Schedule</a
               >
             </li>
-            <li class="nav-item">
+            <li class="nav-item px-lg-2">
               <a class="nav-link" aria-current="page" href="#standing"
                 ><i class="bi-clipboard2-pulse me-2"></i>Standing</a
               >
             </li>
-            <li class="nav-item" data-bs-toggle="modal" data-bs-target="#rules">
+            <li
+              class="nav-item px-lg-2"
+              data-bs-toggle="modal"
+              data-bs-target="#rules"
+            >
               <a class="nav-link" aria-current="page" style="cursor: pointer">
                 <i class="bi-file-ruled me-2"></i>Rules
               </a>
             </li>
           </ul>
-          <button class="btn btn-outline-secondary" id="theme-toggle">
-            <i class="bi-cloud-sun theme-icon"></i>&nbsp;
-            <span class="theme-name">Light Mode</span>
-          </button>
+          <div class="vr d-none d-lg-flex h-auto mx-lg-3"></div>
+          <div class="dropdown" id="theme-toggle">
+            <button
+              type="button"
+              class="btn btn-link nav-link dropdown-toggle py-2 px-0 px-lg-2 d-flex align-items-center"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              aria-label="Toggle Theme"
+            >
+              <i class="bi-moon-stars-fill me-2"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-lg-end">
+              <li>
+                <button
+                  type="button"
+                  class="dropdown-item d-flex align-items-center"
+                  data-bs-theme-value="light"
+                >
+                  <i class="bi-brightness-high-fill me-2"></i>
+                  Light
+                  <i class="bi-check-lg ms-auto"></i>
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  class="dropdown-item d-flex align-items-center"
+                  data-bs-theme-value="dark"
+                >
+                  <i class="bi-moon-stars-fill me-2"></i>
+                  Dark
+                  <i class="bi-check-lg ms-auto"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </nav>
@@ -244,7 +280,7 @@
             </button>
           </li>
         </ul>
-        <div class="tab-content pt-3 pb-3" id="myTabContent">
+        <div class="tab-content py-3" id="myTabContent">
           <div
             class="tab-pane fade show active"
             id="basketball-standing-tab-pane"
@@ -335,21 +371,6 @@
       </div>
     </footer>
     <script src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
-    <script>
-      function numberSort(sortName, sortOrder, data) {
-        var order = sortOrder === "desc" ? -1 : 1;
-        data.sort(function (a, b) {
-          var aa = +(a[sortName] + "").replace(/[^\d]/g, "");
-          var bb = +(b[sortName] + "").replace(/[^\d]/g, "");
-          if (aa < bb) {
-            return order * -1;
-          }
-          if (aa > bb) {
-            return order;
-          }
-          return 0;
-        });
-      }
-    </script>
+    <script src="util.js"></script>
   </body>
 </html>

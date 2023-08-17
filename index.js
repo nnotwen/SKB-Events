@@ -14,6 +14,8 @@ const schedules = {
       ["August", 5, ["2B", "6B", 0], [3, 6, 1], ["2A", 4, 2]],
       ["August", 7, [4, "6A", 0], [7, "6A", 2], ["2A", 7, 1]],
       ["August", 9, [3, 7, 0], [3, 1, 2], [5, "2B", 1]],
+      ["August", 16, [5, "2B", 0], [5, "2A", 2], [3, "2A", 1]],
+      ["August", 18, ["6B", 4, 0], [4, 7, 2], [6, 7, 1]],
     ],
   },
   volleyball: {
@@ -254,30 +256,36 @@ $(function () {
   }
 });
 
-// LIGHT/DARK MODE PERSISTENCY
+// LIGHT/DARK MODE TOGGLE + PERSISTENCY
 $(function () {
-  const theme = localStorage.getItem("bs-theme") || "dark"; // dark is the default theme
-  $("html").attr("data-bs-theme", theme);
-  $(".theme-icon")
-    .removeClass(theme === "dark" ? "bi-cloud-moon" : "bi-cloud-sun")
-    .addClass(theme === "dark" ? "bi-cloud-sun" : "bi-cloud-moon");
-  $(".theme-name").html(theme === "dark" ? "Light Mode" : "Dark Mode");
-});
+  function changeTheme(mode) {
+    const icon = {
+      light: "bi-brightness-high-fill",
+      dark: "bi-moon-stars-fill",
+    };
 
-// LIGHT/DARK MODE TOGGLE
-$(function () {
-  $("#theme-toggle").on("click", function () {
-    const $theme = $("html").attr("data-bs-theme");
-    // Whole webpage theme
-    $("html").attr("data-bs-theme", $theme === "dark" ? "light" : "dark");
-    // Toggler icon
-    $(".theme-icon")
-      .removeClass($theme === "dark" ? "bi-cloud-sun" : "bi-cloud-moon")
-      .addClass($theme === "dark" ? "bi-cloud-moon" : "bi-cloud-sun");
-    // Toggler label
-    $(".theme-name").html($theme === "dark" ? "Dark Mode" : "Light Mode");
-    // Set to localStorage
-    localStorage.setItem("bs-theme", $theme === "dark" ? "light" : "dark");
+    $("#theme-toggle .dropdown-item").each(function () {
+      const $checkIcon = $(this).children(".bi-check-lg");
+      if (mode == $(this).attr("data-bs-theme-value")) {
+        $(this).addClass("active");
+        $checkIcon.removeClass("d-none");
+      } else {
+        $(this).removeClass("active");
+        $checkIcon.addClass("d-none");
+      }
+    });
+
+    $("html").attr("data-bs-theme", mode);
+    $("#theme-toggle .dropdown-toggle i").attr("class", `${icon[mode]} me-2`);
+  }
+
+  changeTheme(localStorage.getItem("bs-theme") || "dark");
+
+  $("#theme-toggle .dropdown-item").on("click", function () {
+    const mode = $(this).attr("data-bs-theme-value");
+    localStorage.setItem("bs-theme", mode);
+
+    changeTheme(mode);
   });
 });
 
